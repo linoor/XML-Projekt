@@ -8,13 +8,13 @@ import './assets/styles/bootstrap.css'
 import './assets/styles/index.less'
 
 // Components
-import Page1 from './src/components/page1.js';
+import WeatherPage from './src/components/weather.js';
 import Page2 from './src/components/page2.js';
 
 render((
   <Router history={hashHistory}>
     <Route path="/" component={App}>
-      <Route path="/page1" component={Page1}/>
+      <Route path="/weather" component={WeatherPage}/>
       <Route path="/page2" component={Page2}/>
     </Route>
   </Router>

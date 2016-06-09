@@ -13,13 +13,13 @@ export default React.createClass({
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
           </button>
-          <a className="navbar-brand" href="#">Project name</a>
+          <a className="navbar-brand" href="#">Dashboard</a>
         </div>
         <div id="navbar" className="collapse navbar-collapse">
           <ul className="nav navbar-nav">
             <li className="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><Link to="/weather">Weather</Link></li>
+            <li><Link to="/page2">Page 2</Link></li>
           </ul>
         </div>
       </div>

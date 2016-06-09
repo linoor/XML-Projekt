@@ -6,7 +6,7 @@ import Nav from './components/nav.js';
 const App = React.createClass({
   render() {
     return (
-      <div>
+      <div className="col-xs-10 col-xs-offset-1">
         <Nav />
 
         {this.props.children}
