@@ -14,7 +14,7 @@ let SmallInfo = React.createClass({
        let classes = `${this.props.class} push-right`;
 
        return (
-           <div className="col-xs-3 smallinfo">
+           <div className="text-center smallinfo">
                <div className="well">
                    <span>{this.props.name}</span>
                    <i className={classes}></i>
@@ -42,6 +42,7 @@ let Weather = React.createClass({
               </div>
               <div className="row">
                   <SmallInfo name="Wind" class="wi wi-direction-up" />
+                  <SmallInfo name="Humidity" class="wi wi-humidity" />
                   <SmallInfo name="Moon Phase" class="wi wi-moon-waxing-crescent-4" />
               </div>
           </div>
