@@ -6,6 +6,8 @@ import App from './src/app'
 // Global Styles
 import './assets/styles/bootstrap.css'
 import './assets/styles/index.less'
+import './assets/styles/weather-icons.css'
+import './assets/styles/weather-icons-wind.css'
 
 // Components
 import WeatherPage from './src/components/weather.js';
