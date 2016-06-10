@@ -22,7 +22,7 @@ export default React.createClass({
         </div>
         <div id="navbar" className="collapse navbar-collapse">
           <ul className="nav navbar-nav">
-            <li><a href="#">Home</a></li>
+            <li><Link to="/">Home</Link></li>
             <li className={this.isActive('weather') ? 'active' : ''}><Link to="/weather">Weather</Link></li>
             <li><Link to="/page2">Page 2</Link></li>
           </ul>
