@@ -9,22 +9,40 @@ let data = {
     wind: 'se'
 };
 
+let SmallInfo = React.createClass({
+   render() {
+       let classes = `${this.props.class} push-right`;
+
+       return (
+           <div className="col-xs-3 smallinfo">
+               <div className="well">
+                   <span>{this.props.name}</span>
+                   <i className={classes}></i>
+               </div>
+           </div>
+       )
+   }
+});
+
 let Weather = React.createClass({
 
   render() {
       let unit = this.props.data.unit === 'celsius' ? 'C' : 'F';
+      let windClass = `wi wi-towards-n`;
 
       return (
-          <div>
-              <div className="row">
-                  <div className="cols-xs-6 col-xs-offset-3 temp">
+          <div className="text-center">
+              <div className="row city">
+                  <span>{this.props.data.city}</span>
+              </div>
+              <div className="row temp">
                       <i className="icon wi wi-day-sunny"></i>
                       <span className="">{this.props.data.temp}</span>
                       <span className="">°{unit}</span>
-                  </div>
               </div>
               <div className="row">
-                  asd
+                  <SmallInfo name="Wind" class="wi wi-direction-up" />
+                  <SmallInfo name="Moon Phase" class="wi wi-moon-waxing-crescent-4" />
               </div>
           </div>
       )
@@ -34,7 +52,7 @@ let Weather = React.createClass({
 let Jumbotron = React.createClass({
    render() {
        return (
-           <div className="jumbotron">
+           <div className="jumbotron text-center">
                <h1 className="display-3">Welcome to the weather dashboard!</h1>
                <p className="lead">Change some input fields to generate results</p>
            </div>
