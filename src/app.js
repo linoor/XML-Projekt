@@ -4,13 +4,31 @@ import React from 'react';
 import Nav from './components/nav.js';
 
 const App = React.createClass({
+  getInitialState() {
+      return {
+          backgroundStyle: {}
+      }
+  },
+
+  changeBackground() {
+      let backgroundImageSrc = `http://loremflickr.com/${window.screen.availWidth}/${window.screen.availHeight}/nature`;
+      let backgroundStyle = {
+          backgroundImage: `url(${backgroundImageSrc})`,
+          backgroundSize: `${window.screen.availWidth}px ${window.screen.availHeight}px`,
+          backgroundRepeat: 'no-repeat'
+      };
+      this.setState({backgroundStyle: backgroundStyle})
+  },
+
   render() {
     return (
-      <div className="col-xs-10 col-xs-offset-1">
-        <Nav />
+        <div style={this.state.backgroundStyle}>
+            <div className="col-xs-10 col-xs-offset-1">
+                <Nav />
 
-        {this.props.children}
-      </div>
+                {React.cloneElement(this.props.children, {changeBackground: this.changeBackground})}
+            </div>
+        </div>
     );
   }
 });

@@ -12,7 +12,21 @@ export default React.createClass({
       }
   },
 
+  componentWillMount() {
+      let height = document.documentElement.clientHeight + 400;
+      let backgroundSrc = `http://loremflickr.com/${window.screen.availWidth}/${height}/nature`;
+      console.log(backgroundSrc)
+      document.body.style.backgroundImage = `url(${backgroundSrc})`;
+      document.body.style.backgroundSize = `${window.screen.availWidth}px ${window.screen.availHeight}px`;
+      document.body.style.backgroundRepeat = 'no-repeat';
+  },
+
+  componentWillUnmount() {
+      document.body.style.backgroundImage = '';
+  },
+
   render() {
+
     return (
       <div className="quote">
         <p>{this.state.quote.content}</p>
