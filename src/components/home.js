@@ -6,25 +6,42 @@ export default React.createClass({
   getInitialState() {
       return {
           content: '',
-          title: ''
+          author: '',
+          background: 'lol',
       }
   },
 
   componentWillMount() {
       let quoteSrc = 'http://quotes.rest/qod.json?';
-      $.get(quoteSrc, (results) => {
-          let quote = results.contents.quotes[0];
-          this.setState({
-              content: quote.quote,
-              title: quote.author
+      if (localStorage.getItem('content') === null ||
+          localStorage.getItem('author') === null ||
+          localStorage.getItem('background') === null) {
+          $.get(quoteSrc, (results) => {
+              let quote = results.contents.quotes[0];
+              let content = quote.quote;
+              let author = quote.author;
+              let background = quote.background;
+              this.setState({
+                  content: content,
+                  author: author,
+                  background: background,
+              });
+              localStorage.setItem('content', content);
+              localStorage.setItem('author', author);
+              localStorage.setItem('background', background);
+              document.body.style.backgroundImage = `url(${this.state.background})`;
           });
-          document.body.style.backgroundImage = `url(${quote.background})`;
-      });
+      } else {
+          this.setState({
+              content: localStorage.getItem('content'),
+              author: localStorage.getItem('author'),
+              background: localStorage.getItem('background'),
+          });
+          document.body.style.backgroundImage = `url(${localStorage.getItem('background')})`;
+      }
 
       let height = window.innerHeight;
       let width = window.innerWidth;
-      let backgroundSrc = `http://loremflickr.com/${width}/${height}/nature`;
-      //document.body.style.backgroundImage = `url(${backgroundSrc})`;
       document.body.style.backgroundSize = `${width}px ${height}px`;
       document.body.style.backgroundRepeat = 'no-repeat';
   },
@@ -38,7 +55,7 @@ export default React.createClass({
     return (
       <div className="quote">
         <p>{this.state.content}</p>
-        &mdash; {this.state.title}
+        &mdash; {this.state.author}
       </div>
     )
   }

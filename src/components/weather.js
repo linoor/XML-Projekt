@@ -26,6 +26,15 @@ let SmallInfo = React.createClass({
 
 let Weather = React.createClass({
 
+  getInitialState() {
+      return {
+          data: null
+      }
+  },
+
+  componentWillMount() {
+  },
+
   render() {
       let unit = this.props.data.unit === 'celsius' ? 'C' : 'F';
       let windClass = `wi wi-towards-n`;
@@ -64,14 +73,26 @@ let Jumbotron = React.createClass({
 export default React.createClass({
   getInitialState() {
       return {
-          coords: null
+          data, null
       };
   },
 
   componentWillMount() {
-      navigator.geolocation.getCurrentPosition(geoposition => {
-        this.setState({coords: geoposition.coords});
-      })
+      if (localStorage.getItem('data') === null) {
+          navigator.geolocation.getCurrentPosition(geoposition => {
+              this.setState({coords: geoposition.coords});
+              let coords = geoposition.coords;
+              let lat = Math.round(coords.latitude);
+              let lon = Math.round(coords.longitude);
+              let url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${apiKey}`;
+              $.get(url, (results) => {
+                 this.setState({data: results});
+                 localStorage.setItem('data', results)
+              });
+          });
+      } else {
+        this.setState({data: localStorage.getItem('data')});
+      }
   },
 
   render() {
