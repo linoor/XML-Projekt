@@ -5,19 +5,27 @@ export default React.createClass({
 
   getInitialState() {
       return {
-          quote: {
-              content: 'A goal is a dream with a deadline.',
-              title: 'Napoleon Hill'
-          }
+          content: '',
+          title: ''
       }
   },
 
   componentWillMount() {
-      let height = document.documentElement.clientHeight + 400;
-      let backgroundSrc = `http://loremflickr.com/${window.screen.availWidth}/${height}/nature`;
-      console.log(backgroundSrc)
-      document.body.style.backgroundImage = `url(${backgroundSrc})`;
-      document.body.style.backgroundSize = `${window.screen.availWidth}px ${window.screen.availHeight}px`;
+      let quoteSrc = 'http://quotes.rest/qod.json?';
+      $.get(quoteSrc, (results) => {
+          let quote = results.contents.quotes[0];
+          this.setState({
+              content: quote.quote,
+              title: quote.author
+          });
+          document.body.style.backgroundImage = `url(${quote.background})`;
+      });
+
+      let height = window.innerHeight;
+      let width = window.innerWidth;
+      let backgroundSrc = `http://loremflickr.com/${width}/${height}/nature`;
+      //document.body.style.backgroundImage = `url(${backgroundSrc})`;
+      document.body.style.backgroundSize = `${width}px ${height}px`;
       document.body.style.backgroundRepeat = 'no-repeat';
   },
 
@@ -29,8 +37,8 @@ export default React.createClass({
 
     return (
       <div className="quote">
-        <p>{this.state.quote.content}</p>
-        &mdash; {this.state.quote.title}
+        <p>{this.state.content}</p>
+        &mdash; {this.state.title}
       </div>
     )
   }
