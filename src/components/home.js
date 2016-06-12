@@ -13,9 +13,9 @@ export default React.createClass({
 
   componentWillMount() {
       let quoteSrc = 'http://quotes.rest/qod.json?';
-      if (localStorage.getItem('content') === null ||
-          localStorage.getItem('author') === null ||
-          localStorage.getItem('background') === null) {
+      if (sessionStorage.getItem('content') === null ||
+          sessionStorage.getItem('author') === null ||
+          sessionStorage.getItem('background') === null) {
           $.get(quoteSrc, (results) => {
               let quote = results.contents.quotes[0];
               let content = quote.quote;
@@ -26,18 +26,18 @@ export default React.createClass({
                   author: author,
                   background: background,
               });
-              localStorage.setItem('content', content);
-              localStorage.setItem('author', author);
-              localStorage.setItem('background', background);
+              sessionStorage.setItem('content', content);
+              sessionStorage.setItem('author', author);
+              sessionStorage.setItem('background', background);
               document.body.style.backgroundImage = `url(${this.state.background})`;
           });
       } else {
           this.setState({
-              content: localStorage.getItem('content'),
-              author: localStorage.getItem('author'),
-              background: localStorage.getItem('background'),
+              content: sessionStorage.getItem('content'),
+              author: sessionStorage.getItem('author'),
+              background: sessionStorage.getItem('background'),
           });
-          document.body.style.backgroundImage = `url(${localStorage.getItem('background')})`;
+          document.body.style.backgroundImage = `url(${sessionStorage.getItem('background')})`;
       }
 
       let height = window.innerHeight;
