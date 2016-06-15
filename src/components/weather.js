@@ -14,12 +14,10 @@ let SmallInfo = React.createClass({
        let classes = `${this.props.class} push-right`;
 
        return (
-           <div className="text-center smallinfo">
-               <div className="well">
+               <button type="button" className="btn btn-default smallinfo">
                    <span>{this.props.name}</span>
                    <i className={classes}></i>
-               </div>
-           </div>
+               </button>
        )
    }
 });
@@ -50,9 +48,11 @@ let Weather = React.createClass({
                       <span className="">°{unit}</span>
               </div>
               <div className="row">
-                  <SmallInfo name="Wind" class="wi wi-direction-up" />
-                  <SmallInfo name="Humidity" class="wi wi-humidity" />
-                  <SmallInfo name="Moon Phase" class="wi wi-moon-waxing-crescent-4" />
+                  <div className="btn-group" role="group" aria-label="info about weather wind humidity etc.">
+                      <SmallInfo name="Wind" class="wi wi-direction-up" />
+                      <SmallInfo name="Humidity" class="wi wi-humidity" />
+                      <SmallInfo name="Moon Phase" class="wi wi-moon-waxing-crescent-4" />
+                  </div>
               </div>
           </div>
       )
