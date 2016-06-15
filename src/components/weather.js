@@ -2,7 +2,7 @@ import React from 'react';
 
 let apiKey = "1b8ccc12e5520e98f5f03b4cdcd4ac9f";
 
-let data = {
+let dataTmp = {
     temp: 74,
     unit: 'celsius',
     city: 'Kraków',
@@ -34,18 +34,18 @@ let Weather = React.createClass({
   },
 
   render() {
-      let unit = this.props.data.unit === 'celsius' ? 'C' : 'F';
+      //let unit = this.props.data.unit === 'celsius' ? 'C' : 'F';
+      //<span className="">{this.props.data.temp}</span>
+      //<span className="">°{unit}</span>
       let windClass = `wi wi-towards-n`;
 
       return (
           <div className="text-center">
               <div className="row city">
-                  <span>{this.props.data.city}</span>
+                  <span>{this.props.data.name}</span>
               </div>
               <div className="row temp">
                       <i className="icon wi wi-day-sunny"></i>
-                      <span className="">{this.props.data.temp}</span>
-                      <span className="">°{unit}</span>
               </div>
               <div className="row">
                   <div className="btn-group" role="group" aria-label="info about weather wind humidity etc.">
@@ -73,12 +73,14 @@ let Jumbotron = React.createClass({
 export default React.createClass({
   getInitialState() {
       return {
-          data, null
+          data: {
+              'name': ''
+          }
       };
   },
 
   componentWillMount() {
-      if (localStorage.getItem('data') === null) {
+      if (sessionStorage.getItem('data') === null) {
           navigator.geolocation.getCurrentPosition(geoposition => {
               this.setState({coords: geoposition.coords});
               let coords = geoposition.coords;
@@ -87,15 +89,18 @@ export default React.createClass({
               let url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${apiKey}`;
               $.get(url, (results) => {
                  this.setState({data: results});
-                 localStorage.setItem('data', results)
+                 let data = JSON.stringify(results);
+                 sessionStorage.setItem('data', data);
               });
           });
       } else {
-        this.setState({data: localStorage.getItem('data')});
+        let data = $.parseJSON(sessionStorage.getItem('data'));
+        this.setState({data: data});
       }
   },
 
   render() {
+    let data = $.parseJSON(sessionStorage.getItem('data')) || this.state.data;
     return(
         <div>
             <Jumbotron />
