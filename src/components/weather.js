@@ -2,21 +2,14 @@ import React from 'react';
 
 let apiKey = "1b8ccc12e5520e98f5f03b4cdcd4ac9f";
 
-let dataTmp = {
-    temp: 74,
-    unit: 'celsius',
-    city: 'Kraków',
-    wind: 'se'
-};
-
 let SmallInfo = React.createClass({
    render() {
        let classes = `${this.props.class} push-right`;
 
        return (
                <button type="button" className="btn btn-default smallinfo">
-                   <span>{this.props.name}</span>
                    <i className={classes}></i>
+                   <span>{this.props.name}</span>
                </button>
        )
    }
@@ -34,10 +27,16 @@ let Weather = React.createClass({
   },
 
   render() {
-      //let unit = this.props.data.unit === 'celsius' ? 'C' : 'F';
-      //<span className="">{this.props.data.temp}</span>
-      //<span className="">°{unit}</span>
+      let unit = this.props.data.unit === 'celsius' ? 'C' : 'F';
+      let humidity = `${this.props.data.main.humidity}%`;
+      let pressure = `${this.props.data.main.pressure} hPa`;
+      let sunriseTime = new Date(this.props.data.sys.sunrise * 1000).toTimeString();
+      let sunrise = `${sunriseTime}`;
+      let sunsetTime = new Date(this.props.data.sys.sunset * 1000).toTimeString();
+      let sunset = `${sunsetTime}`;
+      let clouds = this.props.data.weather[0].description;
       let windClass = `wi wi-towards-n`;
+      let mainIcon = `icon wi wi-owm-${this.props.data.weather[0].id}`;
 
       return (
           <div className="text-center">
@@ -45,13 +44,20 @@ let Weather = React.createClass({
                   <span>{this.props.data.name}</span>
               </div>
               <div className="row temp">
-                      <i className="icon wi wi-day-sunny"></i>
+                      <i className={mainIcon}></i>
+                  <span className="">{this.props.data.main.temp}</span>
+                  <span className="">°{unit}</span>
               </div>
               <div className="row">
                   <div className="btn-group" role="group" aria-label="info about weather wind humidity etc.">
                       <SmallInfo name="Wind" class="wi wi-direction-up" />
-                      <SmallInfo name="Humidity" class="wi wi-humidity" />
-                      <SmallInfo name="Moon Phase" class="wi wi-moon-waxing-crescent-4" />
+                      <SmallInfo name={humidity} class="wi wi-humidity" />
+                      <SmallInfo name={pressure} class="wi wi-barometer" />
+                      <SmallInfo name={clouds} class="wi wi-cloud" />
+                  </div>
+                  <div className="btn-group" role="group" aria-label="info about weather wind humidity etc.">
+                      <SmallInfo name={sunrise} class="wi wi-sunrise" />
+                      <SmallInfo name={sunset} class="wi wi-sunset" />
                   </div>
               </div>
           </div>
