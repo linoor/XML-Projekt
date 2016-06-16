@@ -74,15 +74,25 @@ let Weather = React.createClass({
 
     getInitialState() {
         return {
-            data: null
+            data: null,
+            unit: 'fahrenheit',
         }
     },
 
     componentWillMount() {
+        this.setState({
+            unit: this.props.data.unit === 'celsius' ? 'C' : 'F'
+        })
+    },
+
+    updateUnit(unit) {
+        let newUnit = unit === 'F' ? 'celsius' : 'fahrenheit';
+        console.log(unit);
+        console.log(newUnit);
+        this.setState({unit: newUnit})
     },
 
     render() {
-        let unit = this.props.data.unit === `celsius` ? `C` : `F`;
         let humidity = `${this.props.data.main.humidity}%`;
         let pressure = `${this.props.data.main.pressure} hPa`;
         let sunriseTime = new Date(this.props.data.sys.sunrise * 1000).toTimeString();
@@ -106,7 +116,7 @@ let Weather = React.createClass({
                 <div className="row temp">
                     <i className={mainIcon}></i>
                     <span className="">{this.props.data.main.temp}</span>
-                    <span className="">°{unit}</span>
+                    <TempUnit unit={this.state.unit} updateUnit={this.updateUnit}/>
                     <p>{description}</p>
                 </div>
                 <div className="row">
@@ -135,10 +145,23 @@ function getWindStyles (degrees) {
     };
 }
 
+let TempUnit = React.createClass({
+    handleClick () {
+        console.log(this.refs.unit.textContent);
+       this.props.updateUnit(this.refs.unit.textContent);
+    },
+
+    render() {
+        let unit = this.props.unit === 'celsius' ? 'C' : 'F';
+        return <span onClick={this.handleClick} ref="unit">{unit}</span>
+    }
+})
+
 let SmallInfo = React.createClass({
     render() {
         let classes = `${this.props.class} push-right`;
         let style = this.props.degrees !== null ? getWindStyles(this.props.degrees) : {};
+        let unit = this.props.unit === 'fahrenheit' ? 'F' : 'C';
 
         return (
             <button type="button" className="btn btn-default smallinfo">
