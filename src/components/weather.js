@@ -30,8 +30,15 @@ export default React.createClass({
                   value: 0
               }]
           },
-          //o3Data: {}
-      };
+          oData: {
+              time: "2016-03-03T12:00:00Z",
+              location: {
+                  latitude: 0.0,
+                  longitude: 10.0
+              },
+              data: 0.0
+          }
+      }
   },
 
   componentWillMount() {
@@ -72,23 +79,23 @@ export default React.createClass({
           this.setState({coData: data});
       }
 
-      //if (sessionStorage.getItem('o3Data') === null) {
-      //    navigator.geolocation.getCurrentPosition(geoposition => {
-      //        let coords = geoposition.coords;
-      //        let lat = coords.latitude.toFixed(0);
-      //        let lon = coords.longitude.toFixed(0);
-      //        let date = 'current';
-      //        let url = `http://api.openweathermap.org/pollution/v1/o3/${lat},${lon}/${date}.json?appid=${apiKey}`;
-      //        $.get(url, results => {
-      //            this.setState({o3Data: results});
-      //            let data = JSON.stringify(results);
-      //            sessionStorage.setItem('o3Data', data);
-      //        })
-      //    })
-      //} else {
-      //    let data = $.parseJSON(sessionStorage.getItem(`o3Data`));
-      //    this.setState({o3Data: data});
-      //}
+      if (sessionStorage.getItem('oData') === null) {
+          navigator.geolocation.getCurrentPosition(geoposition => {
+              let coords = geoposition.coords;
+              let lat = coords.latitude.toFixed(0);
+              let lon = coords.longitude.toFixed(0);
+              let date = 'current';
+              let url = `http://api.openweathermap.org/pollution/v1/o3/${lat},${lon}/${date}.json?appid=${apiKey}`;
+              $.get(url, results => {
+                  this.setState({oData: results});
+                  let data = JSON.stringify(results);
+                  sessionStorage.setItem('oData', data);
+              })
+          })
+      } else {
+          let data = $.parseJSON(sessionStorage.getItem(`oData`));
+          this.setState({oData: data});
+      }
   },
 
   componentWillUnmount() {
@@ -98,10 +105,11 @@ export default React.createClass({
   render() {
     let data = $.parseJSON(sessionStorage.getItem(`data`)) || this.state.data;
     let coData = sessionStorage.getItem('coData') !== null ? $.parseJSON(sessionStorage.getItem('coData')) : this.state.coData;
+    let oData = sessionStorage.getItem('oData') !== null ? $.parseJSON(sessionStorage.getItem('oData')) : this.state.oData;
     return(
         <div>
             <Jumbotron />
-            <Weather data={data} coData={coData} />
+            <Weather data={data} coData={coData} oData={oData}/>
         </div>
     )
   }
@@ -149,6 +157,7 @@ let Weather = React.createClass({
         let mainIcon = `icon wi wi-owm-${this.props.data.weather[0].id}`;
 
         let coName = `Carbon dioxide (CO2) VMR ${this.props.coData.data[0].value}`;
+        let oName = `Ozone layer thickness, [DU] ${this.props.oData.data}`;
 
         return (
             <div className="text-center">
@@ -174,7 +183,7 @@ let Weather = React.createClass({
                         <SmallInfo name={coName} class="wi wi-volcano" />
                     </div>
                     <div className="btn-group" role="group" aria-label="info about weather wind humidity etc.">
-                        <SmallInfo name={coName} class="wi wi-volcaon" />
+                        <SmallInfo name={oName} class="wi wi-tsunami" />
                     </div>
                 </div>
             </div>
