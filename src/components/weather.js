@@ -47,8 +47,8 @@ export default React.createClass({
           navigator.geolocation.getCurrentPosition(geoposition => {
               this.setState({coords: geoposition.coords});
               let coords = geoposition.coords;
-              let lat = Math.round(coords.latitude);
-              let lon = Math.round(coords.longitude);
+              let lat = coords.latitude.toFixed(3);
+              let lon = coords.longitude.toFixed(3);
               let url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${apiKey}&units=metric`;
               $.get(url, (results) => {
                  this.setState({data: results});
