@@ -3,17 +3,6 @@ import React from 'react';
 let apiKey = "1b8ccc12e5520e98f5f03b4cdcd4ac9f";
 
 
-let Jumbotron = React.createClass({
-   render() {
-       return (
-           <div className="jumbotron text-center">
-               <h1 className="display-3">Welcome to the weather dashboard!</h1>
-               <p className="lead">Change some input fields to generate results</p>
-           </div>
-       )
-   }
-});
-
 export default React.createClass({
   getInitialState() {
       return {
@@ -40,6 +29,7 @@ export default React.createClass({
   },
 
   componentWillMount() {
+      document.body.style.backgroundColor = 'rgb(0, 152,178)';
       if (sessionStorage.getItem(`data`) === null) {
           navigator.geolocation.getCurrentPosition(geoposition => {
               this.setState({coords: geoposition.coords});
@@ -59,6 +49,10 @@ export default React.createClass({
       }
   },
 
+  componentWillUnmount() {
+      document.body.style.backgroundColor = '';
+  },
+
   render() {
     let data = $.parseJSON(sessionStorage.getItem(`data`)) || this.state.data;
     return(
@@ -68,6 +62,17 @@ export default React.createClass({
         </div>
     )
   }
+});
+
+let Jumbotron = React.createClass({
+    render() {
+        return (
+            <div className="jumbotron text-center">
+                <h1 className="display-3">Welcome to the weather dashboard!</h1>
+                <p className="lead">Change some input fields to generate results</p>
+            </div>
+        )
+    }
 });
 
 let Weather = React.createClass({
@@ -116,9 +121,9 @@ let Weather = React.createClass({
                     <TempInfo temp={this.props.data.main.temp} unit={this.state.unit} updateUnit={this.updateUnit}/>
                     <p>{description}</p>
                 </div>
-                <div className="row">
+                <div className="row" id="buttons">
                     <div className="btn-group" role="group" aria-label="info about weather wind humidity etc.">
-                        <SmallInfo name={windInfo} class={windDirection} degrees={degrees}/>
+                        <SmallInfo name={windInfo} class={windDirection} degrees={degrees} />
                         <SmallInfo name={humidity} class="wi wi-humidity" />
                         <SmallInfo name={pressure} class="wi wi-barometer" />
                     </div>
@@ -166,11 +171,11 @@ let TempInfo = React.createClass({
 let SmallInfo = React.createClass({
     render() {
         let classes = `${this.props.class} push-right`;
-        let style = this.props.degrees !== null ? getWindStyles(this.props.degrees) : {};
+        let degreesStyle = this.props.degrees !== null ? getWindStyles(this.props.degrees) : {};
 
         return (
             <button type="button" className="btn btn-default smallinfo">
-                <i className={classes} style={style}></i>
+                <i className={classes} style={degreesStyle}></i>
                 <span>{this.props.name}</span>
             </button>
         )
