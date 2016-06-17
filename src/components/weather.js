@@ -101,7 +101,7 @@ let Weather = React.createClass({
         let degrees = Math.round(this.props.data.wind.deg);
         let windDirection = `wi wi-wind`;
         let windSpeed = this.props.data.wind.speed;
-        let windInfo = `${windSpeed} km/h`;
+        let windInfo = `${degrees}° ${windSpeed} km/h`;
 
         let mainIcon = `icon wi wi-owm-${this.props.data.weather[0].id}`;
 
