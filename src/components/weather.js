@@ -81,14 +81,12 @@ let Weather = React.createClass({
 
     componentWillMount() {
         this.setState({
-            unit: this.props.data.unit === 'celsius' ? 'C' : 'F'
+            unit: this.props.data.unit === 'celsius' ? 'celsius' : 'fahrenheit'
         })
     },
 
     updateUnit(unit) {
         let newUnit = unit === 'F' ? 'celsius' : 'fahrenheit';
-        console.log(unit);
-        console.log(newUnit);
         this.setState({unit: newUnit})
     },
 
@@ -115,8 +113,7 @@ let Weather = React.createClass({
                 </div>
                 <div className="row temp">
                     <i className={mainIcon}></i>
-                    <span className="">{this.props.data.main.temp}</span>
-                    <TempUnit unit={this.state.unit} updateUnit={this.updateUnit}/>
+                    <TempInfo temp={this.props.data.main.temp} unit={this.state.unit} updateUnit={this.updateUnit}/>
                     <p>{description}</p>
                 </div>
                 <div className="row">
@@ -145,15 +142,24 @@ function getWindStyles (degrees) {
     };
 }
 
-let TempUnit = React.createClass({
+let TempInfo = React.createClass({
     handleClick () {
         console.log(this.refs.unit.textContent);
        this.props.updateUnit(this.refs.unit.textContent);
     },
 
     render() {
-        let unit = this.props.unit === 'celsius' ? 'C' : 'F';
-        return <span onClick={this.handleClick} ref="unit">{unit}</span>
+        let unit = this.props.unit === 'fahrenheit' ? 'F' : 'C';
+        let fahrenheitToCelsius = (f) => { return ((f - 32) * 5 / 9); };
+        let temp = unit === 'F' ?
+            this.props.temp :
+            Math.round(fahrenheitToCelsius(this.props.temp) * 100) / 100;
+        return (
+           <span onDoubleClick={this.handleClick}>
+               <span>{temp}°</span>
+               <span ref="unit">{unit}</span>
+           </span>
+        )
     }
 })
 
@@ -161,7 +167,6 @@ let SmallInfo = React.createClass({
     render() {
         let classes = `${this.props.class} push-right`;
         let style = this.props.degrees !== null ? getWindStyles(this.props.degrees) : {};
-        let unit = this.props.unit === 'fahrenheit' ? 'F' : 'C';
 
         return (
             <button type="button" className="btn btn-default smallinfo">
