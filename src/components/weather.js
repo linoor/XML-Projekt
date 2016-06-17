@@ -36,7 +36,7 @@ export default React.createClass({
               let coords = geoposition.coords;
               let lat = Math.round(coords.latitude);
               let lon = Math.round(coords.longitude);
-              let url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${apiKey}`;
+              let url = `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${apiKey}&units=metric`;
               $.get(url, (results) => {
                  this.setState({data: results});
                  let data = JSON.stringify(results);
@@ -80,14 +80,8 @@ let Weather = React.createClass({
     getInitialState() {
         return {
             data: null,
-            unit: 'fahrenheit',
+            unit: 'celsius'
         }
-    },
-
-    componentWillMount() {
-        this.setState({
-            unit: this.props.data.unit === 'celsius' ? 'celsius' : 'fahrenheit'
-        })
     },
 
     updateUnit(unit) {
@@ -155,10 +149,10 @@ let TempInfo = React.createClass({
 
     render() {
         let unit = this.props.unit === 'fahrenheit' ? 'F' : 'C';
-        let fahrenheitToCelsius = (f) => { return ((f - 32) * 5 / 9); };
-        let temp = unit === 'F' ?
+        let celsiusToFahrenheit = (f) => { return (f * 9/5 + 32); };
+        let temp = unit === 'C' ?
             this.props.temp :
-            Math.round(fahrenheitToCelsius(this.props.temp) * 100) / 100;
+            Math.round(celsiusToFahrenheit(this.props.temp) * 100) / 100;
         return (
            <span onDoubleClick={this.handleClick}>
                <span>{temp}°</span>
