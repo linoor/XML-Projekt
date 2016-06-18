@@ -108,7 +108,7 @@ export default React.createClass({
     let oData = sessionStorage.getItem('oData') !== null ? $.parseJSON(sessionStorage.getItem('oData')) : this.state.oData;
     return(
         <div>
-            <Jumbotron />
+            <Jumbotron message="Welcome to the weather dashboard!"/>
             <Weather data={data} coData={coData} oData={oData}/>
         </div>
     )
@@ -119,7 +119,7 @@ let Jumbotron = React.createClass({
     render() {
         return (
             <div className="jumbotron text-center">
-                <h1 className="display-3">Welcome to the weather dashboard!</h1>
+                <h1 className="display-3">{this.props.message}</h1>
                 <p className="lead">Change some input fields to generate results</p>
             </div>
         )

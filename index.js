@@ -11,7 +11,7 @@ import './assets/styles/weather-icons-wind.css'
 
 // Components
 import WeatherPage from './src/components/weather.js';
-import Page2 from './src/components/page2.js';
+import Finance from './src/components/finance.js';
 import Home from './src/components/home.js';
 
 render((
@@ -20,6 +20,7 @@ render((
       <IndexRoute component={Home} />
       <Route path="/weather" component={WeatherPage}/>
       <Route path="/home" component={Home}/>
+      <Route path="/finance" component={Finance}/>
     </Route>
   </Router>
 ), document.getElementById('app'));
