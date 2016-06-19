@@ -65,7 +65,7 @@ let CurrencyChanger = React.createClass({
     render () {
         let result = (this.state.rate * this.state.amount).toFixed(2);
 
-        let firstOptions = this.state.currencies;
+        let firstOptions = this.state.currencies.filter(s => s !== this.state.secondSelect);
         let secondOptions = this.state.currencies.filter(s => s !== this.state.firstSelect);
 
         return (
@@ -78,7 +78,7 @@ let CurrencyChanger = React.createClass({
                   <CurrencyInput selected={this.state.secondSelect}
                                  txt="To:"
                                  currencies={secondOptions}
-                                 update={(val) => {this.setState({secondState: val})}} />
+                                 update={(val) => {this.setState({secondSelect: val})}} />
                   <NumberInput value={this.state.amount} update={(val) => this.setState({amount: val})} />
                   <Results result={result} />
                 </div>
