@@ -65,16 +65,19 @@ let CurrencyChanger = React.createClass({
     render () {
         let result = (this.state.rate * this.state.amount).toFixed(2);
 
+        let firstOptions = this.state.currencies;
+        let secondOptions = this.state.currencies.filter(s => s !== this.state.firstSelect);
+
         return (
             <div>
                 <div onChange={this.handleChange} className="form-group">
                   <CurrencyInput selected={this.state.firstSelect}
                                  txt="From:"
-                                 currencies={this.state.currencies}
+                                 currencies={firstOptions}
                                  update={(val) => {this.setState({firstSelect: val})}} />
                   <CurrencyInput selected={this.state.secondSelect}
                                  txt="To:"
-                                 currencies={this.state.currencies}
+                                 currencies={secondOptions}
                                  update={(val) => {this.setState({secondState: val})}} />
                   <NumberInput value={this.state.amount} update={(val) => this.setState({amount: val})} />
                   <Results result={result} />
@@ -87,18 +90,18 @@ let CurrencyChanger = React.createClass({
 let CurrencyInput = React.createClass({
 
     handleClick() {
-        this.props.update(this.refs.select.selected);
+        this.props.update(this.refs.select.value);
     },
 
     render() {
         let options = this.props.currencies.map(c => {
-            return this.props.selected === c ? <option selected>{c}</option> : <option>{c}</option>;
+            return <option value={c}>{c}</option>
         });
 
         return (
             <div>
               <label>{this.props.txt}</label>
-              <select onChange={this.handleClick} className="form-control" ref="select">
+              <select onChange={this.handleClick} value={this.props.selected} className="form-control" ref="select">
                   {options}
               </select>
             </div>
