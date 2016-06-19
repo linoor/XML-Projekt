@@ -34,12 +34,13 @@ let CurrencyChanger = React.createClass({
             currencies: [],
             firstSelect: 'PLN',
             secondSelect: 'EUR',
-            amount: 0
+            amount: 0,
+            rate: 0
         }
     },
 
     handleChange() {
-        let url = `http://api.fixer.io/latest?base=${this.state.firstSelected}`;
+        let url = `http://api.fixer.io/latest?base=${this.state.firstSelect}`;
         $.get(url, results => {
             this.setState({rate: results.rates[this.state.secondSelect]});
         })
@@ -62,7 +63,7 @@ let CurrencyChanger = React.createClass({
     },
 
     render () {
-        let result = 15.56;
+        let result = (this.state.rate * this.state.amount).toFixed(2);
 
         return (
             <div>
