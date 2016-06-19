@@ -33,8 +33,16 @@ let CurrencyChanger = React.createClass({
         return {
             currencies: [],
             firstSelect: 'PLN',
-            secondSelect: 'EUR'
+            secondSelect: 'EUR',
+            amount: 0
         }
+    },
+
+    handleChange() {
+        let url = `http://api.fixer.io/latest?base=${this.state.firstSelected}`;
+        $.get(url, results => {
+            this.setState({rate: results.rates[this.state.secondSelect]});
+        })
     },
 
     componentWillMount () {
@@ -54,9 +62,11 @@ let CurrencyChanger = React.createClass({
     },
 
     render () {
+        let result = 15.56;
+
         return (
             <div>
-                <div className="form-group">
+                <div onChange={this.handleChange} className="form-group">
                   <CurrencyInput selected={this.state.firstSelect}
                                  txt="From:"
                                  currencies={this.state.currencies}
@@ -65,6 +75,8 @@ let CurrencyChanger = React.createClass({
                                  txt="To:"
                                  currencies={this.state.currencies}
                                  update={(val) => {this.setState({secondState: val})}} />
+                  <NumberInput value={this.state.amount} update={(val) => this.setState({amount: val})} />
+                  <Results result={result} />
                 </div>
             </div>
         )
@@ -92,3 +104,32 @@ let CurrencyInput = React.createClass({
         )
     }
 });
+
+let NumberInput = React.createClass({
+
+    handleChange() {
+     this.props.update(this.refs.input.value)
+    },
+
+    render() {
+        return (
+            <div class="input-group">
+              <input onChange={this.handleChange}
+                     type="number"
+                     type="text" className="form-control" placeholder="Amount"
+                     ref="input"
+                     value={this.props.value} />
+            </div>
+        )
+    }
+})
+
+let Results = React.createClass({
+    render() {
+        return (
+            <div className="text-center">
+                {this.props.result}
+            </div>
+        )
+    }
+})
