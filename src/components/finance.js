@@ -60,15 +60,11 @@ let CurrencyChanger = React.createClass({
                   <CurrencyInput selected={this.state.firstSelect}
                                  txt="From:"
                                  currencies={this.state.currencies}
-                                 update={(val) => {
-                                    this.setState({firstSelect: val})
-                                  }} />
+                                 update={(val) => {this.setState({firstSelect: val})}} />
                   <CurrencyInput selected={this.state.secondSelect}
                                  txt="To:"
                                  currencies={this.state.currencies}
-                                 update={(val) => {
-                                    this.setState({secondState: val})
-                                  }} />
+                                 update={(val) => {this.setState({secondState: val})}} />
                 </div>
             </div>
         )
@@ -89,7 +85,7 @@ let CurrencyInput = React.createClass({
         return (
             <div>
               <label>{this.props.txt}</label>
-              <select onClick={this.handleClick} className="form-control" ref="select">
+              <select onChange={this.handleClick} className="form-control" ref="select">
                   {options}
               </select>
             </div>
