@@ -46,6 +46,14 @@ let CurrencyChanger = React.createClass({
         })
     },
 
+    reverse() {
+        let firstSelect = this.state.firstSelect;
+        this.setState({
+            firstSelect: this.state.secondSelect,
+            secondSelect: firstSelect
+        })
+    },
+
     componentWillMount () {
         let crossOrigin = 'https://crossorigin.me/';
         let url = 'http://api.fixer.io/latest';
@@ -78,6 +86,9 @@ let CurrencyChanger = React.createClass({
                                          currencies={firstOptions}
                                          update={(val) => {this.setState({firstSelect: val})}} />
                       </div>
+                      <div className="col-xs-1 text-center">
+                          <Reverser onClick={this.reverse} />
+                      </div>
                       <div className="col-xs-3">
                           <CurrencyInput selected={this.state.secondSelect}
                                          txt="To:"
@@ -86,12 +97,12 @@ let CurrencyChanger = React.createClass({
                       </div>
                   </div>
                   <div className="row">
-                     <div className="col-xs-6">
+                     <div className="col-xs-7">
                          <NumberInput value={this.state.amount} update={(val) => this.setState({amount: val})} />
                      </div>
                   </div>
                     <div className="row">
-                        <div className="col-xs-6 text-center">
+                        <div className="col-xs-7 text-center">
                             <Results result={result} />
                         </div>
                     </div>
@@ -147,6 +158,16 @@ let Results = React.createClass({
         return (
             <div id="result">
                 {this.props.result}
+            </div>
+        )
+    }
+})
+
+let Reverser = React.createClass({
+    render() {
+        return (
+            <div>
+                <span id="reverser" onClick={this.props.onClick} className="glyphicon glyphicon-refresh"/>
             </div>
         )
     }
