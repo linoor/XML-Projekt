@@ -71,16 +71,30 @@ let CurrencyChanger = React.createClass({
         return (
             <div>
                 <div onChange={this.handleChange} className="form-group">
-                  <CurrencyInput selected={this.state.firstSelect}
-                                 txt="From:"
-                                 currencies={firstOptions}
-                                 update={(val) => {this.setState({firstSelect: val})}} />
-                  <CurrencyInput selected={this.state.secondSelect}
-                                 txt="To:"
-                                 currencies={secondOptions}
-                                 update={(val) => {this.setState({secondSelect: val})}} />
-                  <NumberInput value={this.state.amount} update={(val) => this.setState({amount: val})} />
-                  <Results result={result} />
+                  <div className="row">
+                      <div className="col-xs-3">
+                          <CurrencyInput selected={this.state.firstSelect}
+                                         txt="From:"
+                                         currencies={firstOptions}
+                                         update={(val) => {this.setState({firstSelect: val})}} />
+                      </div>
+                      <div className="col-xs-3">
+                          <CurrencyInput selected={this.state.secondSelect}
+                                         txt="To:"
+                                         currencies={secondOptions}
+                                         update={(val) => {this.setState({secondSelect: val})}} />
+                      </div>
+                  </div>
+                  <div className="row">
+                     <div className="col-xs-6">
+                         <NumberInput value={this.state.amount} update={(val) => this.setState({amount: val})} />
+                     </div>
+                  </div>
+                    <div className="row">
+                        <div className="col-xs-6 text-center">
+                            <Results result={result} />
+                        </div>
+                    </div>
                 </div>
             </div>
         )
@@ -131,7 +145,7 @@ let NumberInput = React.createClass({
 let Results = React.createClass({
     render() {
         return (
-            <div className="text-center">
+            <div id="result">
                 {this.props.result}
             </div>
         )
