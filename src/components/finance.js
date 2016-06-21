@@ -51,7 +51,7 @@ let CurrencyChanger = React.createClass({
         this.setState({
             firstSelect: this.state.secondSelect,
             secondSelect: firstSelect
-        })
+        }, this.handleChange)
     },
 
     componentWillMount () {
