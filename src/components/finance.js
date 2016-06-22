@@ -77,16 +77,16 @@ let CurrencyChanger = React.createClass({
         let secondOptions = this.state.currencies.filter(s => s !== this.state.firstSelect);
 
         return (
-            <div>
+            <div className="">
                 <div onChange={this.handleChange} className="form-group">
                   <div className="row">
-                      <div className="col-xs-3">
+                      <div className="col-xs-3 col-xs-offset-2">
                           <CurrencyInput selected={this.state.firstSelect}
                                          txt="From:"
                                          currencies={firstOptions}
                                          update={(val) => {this.setState({firstSelect: val})}} />
                       </div>
-                      <div className="col-xs-1 text-center">
+                      <div className="col-xs-2 text-center">
                           <Reverser onClick={this.reverse} />
                       </div>
                       <div className="col-xs-3">
@@ -97,12 +97,12 @@ let CurrencyChanger = React.createClass({
                       </div>
                   </div>
                   <div className="row">
-                     <div className="col-xs-7">
+                     <div className="col-xs-8 col-xs-offset-2">
                          <NumberInput value={this.state.amount} update={(val) => this.setState({amount: val})} />
                      </div>
                   </div>
                     <div className="row">
-                        <div className="col-xs-7 text-center">
+                        <div className="col-xs-8 col-xs-offset-2 text-center">
                             <Results result={result} />
                         </div>
                     </div>
