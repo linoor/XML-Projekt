@@ -42,7 +42,6 @@ export default React.createClass({
   },
 
   componentWillMount() {
-      document.body.style.backgroundColor = 'rgb(0, 152,178)';
       if (sessionStorage.getItem(`data`) === null) {
           navigator.geolocation.getCurrentPosition(geoposition => {
               this.setState({coords: geoposition.coords});
@@ -99,7 +98,6 @@ export default React.createClass({
   },
 
   componentWillUnmount() {
-      document.body.style.backgroundColor = '';
   },
 
   render() {
@@ -141,23 +139,26 @@ let Weather = React.createClass({
     },
 
     render() {
-        let humidity = `${this.props.data.main.humidity}%`;
-        let pressure = `${this.props.data.main.pressure} hPa`;
-        let sunriseTime = new Date(this.props.data.sys.sunrise * 1000).toTimeString();
-        let sunrise = `${sunriseTime}`;
-        let sunsetTime = new Date(this.props.data.sys.sunset * 1000).toTimeString();
-        let sunset = `${sunsetTime}`;
-        let description = this.props.data.weather[0].description;
+        const humidity = `${this.props.data.main.humidity}%`;
+        const pressure = `${this.props.data.main.pressure} hPa`;
+        const sunriseTime = new Date(this.props.data.sys.sunrise * 1000).toTimeString();
+        const sunrise = `${sunriseTime}`;
+        const sunsetTime = new Date(this.props.data.sys.sunset * 1000).toTimeString();
+        const sunset = `${sunsetTime}`;
+        const description = this.props.data.weather[0].description;
 
-        let degrees = Math.round(this.props.data.wind.deg);
-        let windDirection = `wi wi-wind`;
-        let windSpeed = this.props.data.wind.speed;
-        let windInfo = `${degrees}° ${windSpeed} km/h`;
+        const degrees = Math.round(this.props.data.wind.deg);
+        const windDirection = `wi wi-wind`;
+        const windSpeed = this.props.data.wind.speed;
+        const windInfo = `${degrees}° ${windSpeed} km/h`;
 
-        let mainIcon = `icon wi wi-owm-${this.props.data.weather[0].id}`;
+        const mainIcon = `icon wi wi-owm-${this.props.data.weather[0].id}`;
 
-        let coName = `Carbon dioxide (CO2) VMR ${this.props.coData.data[0].value}`;
-        let oName = `Ozone layer thickness, [DU] ${this.props.oData.data}`;
+        const vmr = this.props.coData.data[0].value.toPrecision(4);
+        const coName = `Carbon dioxide (CO2) VMR ${vmr}`;
+
+        const du = this.props.oData.data.toPrecision(6);
+        const oName = `Ozone layer thickness, [DU] ${du}`;
 
         return (
             <div className="text-center">
@@ -171,18 +172,22 @@ let Weather = React.createClass({
                 </div>
                 <div className="row" id="buttons">
                     <div className="btn-group" role="group" aria-label="info about weather wind humidity etc.">
-                        <SmallInfo name={windInfo} class={windDirection} degrees={degrees} />
-                        <SmallInfo name={humidity} class="wi wi-humidity" />
-                        <SmallInfo name={pressure} class="wi wi-barometer" />
+                        <SmallInfo name={windInfo} class={windDirection} degrees={degrees}/>
+                        <SmallInfo name={humidity} class="wi wi-humidity"/>
+                        <SmallInfo name={pressure} class="wi wi-barometer"/>
                     </div>
-                    <div className="btn-group" role="group" aria-label="info about weather wind humidity etc.">
-                        <SmallInfo name={sunrise} class="wi wi-sunrise" />
-                        <SmallInfo name={sunset} class="wi wi-sunset" />
+                </div>
+                <div className="row">
+                    <div className="col-sm-12">
+                            <SmallInfo name={sunrise} class="wi wi-sunrise" />
+                            <SmallInfo name={sunset} class="wi wi-sunset" />
                     </div>
-                    <div className="btn-group" role="group" aria-label="info about weather wind humidity etc.">
+                </div>
+                <div className="row">
+                    <div className="col-sm-12">
                         <SmallInfo name={coName} class="wi wi-volcano" />
                     </div>
-                    <div className="btn-group" role="group" aria-label="info about weather wind humidity etc.">
+                    <div className="col-sm-12">
                         <SmallInfo name={oName} class="wi wi-tsunami" />
                     </div>
                 </div>
@@ -228,7 +233,7 @@ let SmallInfo = React.createClass({
         let degreesStyle = this.props.degrees !== null ? getWindStyles(this.props.degrees) : {};
 
         return (
-            <button type="button" className="btn btn-default smallinfo">
+            <button type="button" className={`btn btn-default smallinfo`}>
                 <i className={classes} style={degreesStyle}></i>
                 <span>{this.props.name}</span>
             </button>
