@@ -33,7 +33,9 @@
   },
   "dependencies": {
     "highcharts": "^4.2.5",
+    "highstock-browserify": "^1.0.6",
     "react": "^15.1.0",
-    "react-highcharts": "^8.3.3"
+    "react-highcharts": "^8.3.3",
+    "react-highstock": "^1.0.2"
   }
 }

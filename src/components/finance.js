@@ -1,8 +1,7 @@
 import React from 'react';
-var Highcharts = require('highcharts/highstock');
-window.Highcharts = Highcharts;
-require('highcharts/modules/exporting')(Highcharts);
-
+import ReactHighstock from 'react-highcharts';
+import ReactHighcharts from 'react-highcharts';
+import Highcharts from 'highcharts';
 
 let apiKey = 'aGYvbFTWY2mshdTiXDkj9iMe40Zlp1cPS6bjsn1PhRVzEBHpuL';
 
@@ -72,7 +71,26 @@ let getOptions = function (data) {
 };
 
 export default React.createClass({
+  getInitialState() {
+      return {
+          stopUpdating: false,
+          data: []
+      }
+  },
+
+  componentDidMount() {
+      if (this.state.data.length === 0) {
+          $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=new-intraday.json&callback=?', (data) => {
+              this.setState({
+                  data: data,
+              });
+          })
+      }
+  },
+
   render() {
+    const options = getOptions(this.state.data);
+
     return(
       <div>
           <div className="row">
@@ -80,6 +98,9 @@ export default React.createClass({
           </div>
           <div className="row">
               <CurrencyChanger />
+          </div>
+          <div className="row">
+              <ReactHighstock config={options} neverReflow={this.state.stopUpdating} />
           </div>
       </div>
     )
@@ -104,7 +125,7 @@ let CurrencyChanger = React.createClass({
             firstSelect: 'PLN',
             secondSelect: 'EUR',
             amount: 0,
-            rate: 0
+            rate: 0,
         }
     },
 
@@ -123,7 +144,7 @@ let CurrencyChanger = React.createClass({
         }, this.handleChange)
     },
 
-    componentWillMount () {
+    componentDidMount () {
         let crossOrigin = 'https://crossorigin.me/';
         let url = 'http://api.fixer.io/latest';
         $.ajax({
@@ -144,8 +165,6 @@ let CurrencyChanger = React.createClass({
 
         let firstOptions = this.state.currencies.filter(s => s !== this.state.secondSelect);
         let secondOptions = this.state.currencies.filter(s => s !== this.state.firstSelect);
-
-        const options = getOptions(this.state.data);
 
         return (
             <div className="">
@@ -176,10 +195,6 @@ let CurrencyChanger = React.createClass({
                         <div className="col-xs-8 col-xs-offset-2 text-center">
                             <Results result={result} />
                         </div>
-                    </div>
-
-                    <div className="row">
-                        <Chart container="container"/>
                     </div>
                 </div>
             </div>
@@ -245,24 +260,5 @@ let Reverser = React.createClass({
                 <span id="reverser" onClick={this.props.onClick} className="glyphicon glyphicon-refresh"/>
             </div>
         )
-    }
-})
-
-const Chart = React.createClass({
-    componentDidMount() {
-        $.getJSON('https://www.highcharts.com/samples/data/jsonp.php?filename=new-intraday.json&callback=?', (data) => {
-            this.chart = new Highcharts[this.props.type || "Chart"](
-                this.props.container,
-                data
-            )
-        });
-    },
-
-    componentWillUnmount() {
-        this.chart.destroy();
-    },
-
-    render() {
-        return <div id={this.props.container}></div>
     }
 })
